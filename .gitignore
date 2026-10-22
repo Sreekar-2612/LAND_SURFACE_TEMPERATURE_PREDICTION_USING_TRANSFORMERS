@@ -1,0 +1,75 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE / Editor artifacts
+.vscode/
+.idea/
+*.swp
+*.swo
+.qodo/
+
+# Datasets and Large Archives (Satellite rasters > 10GB)
+data/raw/
+data/processed/
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# Model Weights and Checkpoints (GitHub 100MB limit)
+*.pt
+*.pth
+*.onnx
+*.bin
+*.h5
+*.ckpt
+outputs/models/*.pt
+outputs/models/*.pth
+
+# Large GeoTIFF outputs
+outputs/rasters/*.tif
+*.tif
+*.TIF
+
+# NetCDF files
+*.nc
+
+# Slurm / HPC Logs
+*.out
+*.err
+*.log
+geovit_run.log

@@ -1,0 +1,17 @@
+torch>=2.0.0
+torchvision>=0.15.0
+numpy>=1.24.0
+pandas>=2.0.0
+rasterio>=1.3.0
+pyproj>=3.5.0
+scipy>=1.10.0
+scikit-image>=0.21.0
+scikit-learn>=1.3.0
+shap>=0.43.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+tqdm>=4.65.0
+netCDF4>=1.6.0
+xarray>=2023.1.0
+richdem>=2.3.0
+jenkspy>=0.3.0

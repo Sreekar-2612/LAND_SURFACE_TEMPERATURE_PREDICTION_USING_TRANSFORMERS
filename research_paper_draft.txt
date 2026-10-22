@@ -1,0 +1,85 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\title{Swin Transformer based Urban Heat Island Prediction}
+\author{praveen.k.chandaliya}
+\date{July 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Abstract}
+
+Urban heat lands intensification have become a critical consequence of urbanization. The built-up environments experience higher temperatures than the surrounding areas. Elevated urban temperatures adversely affects human health, degrades air quality and reduces the urban livability. Therefore, reliable thermal mapping enables informed decision-making for sustainable development.
+
+Although the existing thermal infrared sensors provide valuable land surface temperature observations, these remote sensing methods are constrained by inherent spatial resolution limitations. They don’t provide the fine scale thermal variations within a heterogeneous urban landscape. Thermal infrared imagery remains primitively restricted by coarse spatial granularity. The absence of high resolution thermal monitoring poses a significant obstacle to urban temperature mapping.
+
+The advances in transformer-based learning architectures have demonstrated high capability in learning hierarchical spatial representations and catching long-range context and features from the remote sensing imagery. The SWin transformer, with its shifted window self-attention mechanism, offers an efficient solution for dealing with multi-scale spatial context while keeping the computational cost efficient. This study incorporates a framework that integrates the SWin Transformer model to asses the urban heat susceptibility in and around Ahmedabad, India. Multi-source geospatial datasets, like Landsat-8 thermal imagery for land surface temperature estimation; SRTM elevation for topographic information, ALOS PALSAR radar data describing urban morphology, ERA5 reanalysis data for meteorological variables such as air temperature, humidity, wind speed, and solar radiation; and Sentinel-2 multispectral imagery for land cover and vegetation characterization, were incorporated for analysis. The heterogeneous collection of datasets in used in the study collectively describes the environmental, topographic, and other atmospheric factors that affect the thermal dynamics.
+
+The raw datasets were subjected to preprocessing methods like atmospheric correction, geometric alignment, cloud cover masking, extracting features, spatial resampling, and normalization to ensure consistency across various resolutions and sensor readings. 
+
+The proposed Swin Transformer framework demonstrated robust performance in urban heat susceptibility assessment across six evaluation dates. The model achieved an average classification accuracy of \textbf{80.47\%}, with an average \textbf{RMSE of 1.91°C}, \textbf{MAE of 1.39°C}, and a \textbf{weighted F1-score of 0.804}. Furthermore, the framework attained an average \textbf{High-UHI F1-score of 0.610}, indicating its capability to effectively identify thermally vulnerable urban regions. The generated urban heat susceptibility maps provide valuable insights into the spatial distribution of heat-prone areas, supporting evidence-based urban planning, sustainable development, and the formulation of effective heat mitigation strategies.
+
+
+\section{Introduction}
+
+Urbanization, with its widespread spatial impacts on the natural environment, has greatly changed the local and global climate of cities all over the world. Among the environmental issues resulting from the intensive growth of urban built-up areas, the urban heat island (UHI) is one of the most significant problems. 
+
+The availability of medium-resolution satellite imagery, such as data from Landsat 8 and 9 , has novel opportunities for monitoring the Earth's surface's thermal dynamics. A crucial application of this data is mapping the Land Surface Temperature (LST) and the classification of Urban Heat Island (UHI) hotspots. High-resolution LST estimation is necessary and crucial to comprehend climate dynamics, yet the traditional thermal resolution of satellite sensors is often too low (e.g., 100 m resampled to 30 m for Landsat) to resolve largely heterogeneous features of urban landscapes. Furthermore, downscaling LST to higher spatial resolution (e.g., 10 m) using secondary multispectral and topographic features has become a major challenge in remote sensing.
+
+In the past, pixel-based machine learning algorithms like Random Forest regression have been used for LST downscaling and classification of Urban Heat Island (UHI) hotspots. Although they are feasible for computation, these traditional approaches assess each pixel separately, thereby leading to a lack of context awareness. Pixel-based methods are unable to capture the spatial topological features and nonlinear interactions present in the urban environment, such as the cooling gradient that extends from a water body into a densely populated area, because they ignore the surrounding neighborhood. As a result of this, these models generate predictions that are generalized and largely influenced by artifacts, making it difficult to reconstruct distinct structural boundaries.
+
+Deep Learning has transformed the extraction of spatial features in remote sensing in the recent years. Although CNNs have shown major success in learning spatial contexts that are localized. they are unable to keep aware of the long range dependencies due to their localized receptive fields. This is addressed by Vision Transformers (ViTs) , which use self attention mechanism to capture the global context throughout an image. Nevertheless, it is still very difficult to apply pure transformers to dense, pixel level geospatial regression tasks. Fine-grained spatial boundaries, which are strictly necessary for high-constancy(ViTs),nscaling ana self-attention spot localization, are lost due to extreme downsampling required by transformer encoders.
+
+In order to bridge this gap, we use SwinGeo, a novel deep learning architecture designed for the high resolution (10 m) estimation of LST and UHI classification. It is based on the Swin-UNet framework. SwinGeo uses a hierarchical, shifted-window self-attention to capture multi-scale global contexts by incorporating a Swin Transformer Tiny (Swin-T) backbone into an encoder-decoder U-Net topology. In order to avoid losing structural details and features during upsampling and downsampling, we use symmetric skip connections to directly propagate high-resolution feature maps from encoder to decoder. A {$1 \times 1$} convolution regression head at the end of the architecture maps a complex 17-channel input tensor of topography, meteorological data, and spectral indices directly to a continuous thermal surface.
+
+A secondary, yet equally crucial, challenge in deep learning for remote sensing is the temporal domain shift. Models trained on specific temporal snapshots often suffer from severe performance degradation when applied to unseen dates due to seasonal variations in solar elevation, soil moisture, and atmospheric conditions. To deal with this, we introduce a subsequent mean-bias correction methodology that successfully calibrates the model's absolute predictions across seasons while preserving the relative spatial patterns learned by the transformer.
+
+We perform our study using the SwinGeo pipeline over the swiftly urbanizing city of Ahmedabad and around it, India. The primary contributions of this research are summarized as follows:
+
+\subsection{Architectural Adaptation for Continuous Geospatial Regression}
+We successfully adapt the Swin-Unet architecture from semantic segmentation to dense LST regression, achieving a state-of-the-art RMSE of 1.51 at a 10 m spatial resolution.
+
+\subsection{Advantages of Context-Aware Feature Extraction}
+We demonstrate that the hierarchical self-attention mechanism significantly outperforms the Random Forest model, Vision Transformer model, and SegFormer models in urban heat island hotspot classification, achieving an accuracy of 84.3\% with a highly improved true negative rate.
+
+\subsection{Mitigation of Temporal Domain Shifts}
+We present a methodology that performs robust calibration that stabilizes the deep learning pipeline against season data drift, maintaining high spatial fidelity and precision across out-of-season test dates.
+
+
+\section{Related Work}
+
+\subsection{LST Downscaling and UHI Monitoring}
+The spatial resolution of thermal infrared (TIR) sensors, such as those on Landsat 8/9 and MODIS, is often too coarse for localized Urban Heat Island (UHI) analysis. Consequently, spatial downscaling of LST has been extensively researched. Traditional statistical methods, such as Thermal Sharpening (TsHARP) and spatial statistical regression, rely on the inverse relationship between LST and vegetation indices (e.g., NDVI). However, these linear empirical models struggle to capture the complex, non-linear thermal dynamics of heterogeneous urban environments. 
+
+In recent years, machine learning approaches like Random Forest (RF) and Support Vector Machines (SVM) have been employed to incorporate multiple ancillary predictors (elevation, albedo, built-up indices) to improve downscaling accuracy. While these pixel-based methods improve upon traditional statistics, they process each pixel in isolation. This failure to account for spatial topology and neighborhood effects often leads to blocky artifacts and generalized predictions that misrepresent distinct urban structural boundaries.
+
+\subsection{Deep Learning in Remote Sensing}
+To address the limitations of pixel-based methods, Convolutional Neural Networks (CNNs) have been widely adopted for LST downscaling and remote sensing regression tasks. Architectures like U-Net can extract multi-scale spatial features, effectively capturing the structural context of urban morphology. Despite their success, CNNs are inherently limited by their localized receptive fields, making it difficult to capture long-range global dependencies—such as the cooling influence of a large water body on distant urban neighborhoods.
+
+The introduction of Vision Transformers (ViTs) offered a paradigm shift by utilizing self-attention mechanisms to model global context. However, standard ViTs require tokenizing the image into patches, which often results in the loss of fine-grained spatial resolution—a critical requirement for dense, pixel-level geospatial regression. 
+
+\subsection{Swin Transformers in Dense Prediction}
+The Swin Transformer addresses the computational bottlenecks and resolution loss of pure ViTs through a hierarchical, shifted-window approach. By computing self-attention locally within non-overlapping windows and shifting these windows across layers, it efficiently captures both local details and global context. While Swin Transformers and the Swin-Unet architecture have demonstrated state-of-the-art performance in medical image segmentation and optical remote sensing classification, their application to dense, multi-modal continuous geospatial regression—specifically for high-resolution LST estimation and UHI classification—remains largely unexplored. Our proposed SwinGeo framework bridges this gap.
+
+
+\section{Study Area and Data}
+
+\subsection{Study Area}
+The study is conducted over the city of Ahmedabad and its surrounding peri-urban regions in Gujarat, India (approximate coordinates: $23.0225^\circ$ N, $72.5714^\circ$ E). Ahmedabad is one of the fastest-growing and most industrialized cities in India, characterized by dense built-up areas, varying urban morphology, and the Sabarmati River intersecting the city. The region experiences a hot semi-arid climate, with extreme summer temperatures frequently exceeding $40^\circ$C. The rapid pace of urbanization, conversion of vegetative cover to impervious surfaces, and the resulting severe UHI effects make Ahmedabad an ideal and critical testbed for high-resolution thermal mapping and urban heat susceptibility assessment.
+
+\subsection{Datasets and Preprocessing}
+To accurately model the complex interactions driving urban land surface temperatures, a multi-source, multi-modal dataset comprising 17 distinct channels was assembled. The datasets were spatially harmonized and resampled to a target high resolution of 10 m.
+
+\begin{itemize}
+    \item \textbf{Landsat-8 Thermal Imagery:} Thermal Infrared Sensor (TIRS) Band 10 was utilized to derive the baseline coarse-resolution LST, which served as the ground truth for training the regression model.
+    \item \textbf{Sentinel-2 Multispectral Data:} High-resolution optical data was used to extract vital spectral indices, including the Normalized Difference Vegetation Index (NDVI), Normalized Difference Built-up Index (NDBI), and Modified Normalized Difference Water Index (MNDWI), providing detailed land cover characterization.
+    \item \textbf{Topographic Data (SRTM):} The Shuttle Radar Topography Mission (SRTM) Digital Elevation Model (DEM) was incorporated to account for elevation, slope, and aspect, which significantly influence solar insolation and thermal accumulation.
+    \item \textbf{Urban Morphology (ALOS PALSAR):} L-band radar data was utilized to capture urban structural density and volume, which are critical drivers of heat retention in built environments.
+    \item \textbf{Meteorological Data (ERA5):} Reanalysis data provided continuous atmospheric context, including air temperature at 2m, relative humidity, wind speed, and surface solar radiation downwards.
+\end{itemize}
+
+All optical datasets underwent atmospheric correction and cloud masking. To ensure deep learning compatibility, all 17 input channels were normalized using standard Z-score normalization, accelerating model convergence and ensuring that variables with larger numeric ranges did not disproportionately influence the attention weights.
+
+\end{document}
