@@ -169,14 +169,6 @@ Boxplot analysis validating physical thermodynamic relationships across distinct
   <em>Figure 5: LST distribution by ESA WorldCover classes. Built-up surfaces exhibit highest median temperatures ($\sim 48^\circ\text{C}$), while tree canopy and agricultural croplands maintain strong evaporative cooling buffers.</em>
 </p>
 
-### 5. Explainable AI (XAI): SHAP Feature Attribution
-Feature attribution analysis using SHAP (SHapley Additive exPlanations) verifying that the transformer learns physical relationships rather than memorizing noise:
-
-<p align="center">
-  <img src="outputs/figures/shap_summary_2025-01-28.png" alt="SHAP Feature Attribution" width="650"/>
-  <br>
-  <em>Figure 6: SHAP summary beeswarm plot. Higher vegetation index (NDVI) values correlate strongly with negative SHAP contributions (active cooling effect), whereas built-up indices drive positive thermal attribution.</em>
-</p>
 
 ---
 
